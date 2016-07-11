@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Login with fb</title>
+
+  </head>
+
+  <body>
+  <!--FACEBOOK SCRIPT-->
+  <script>
+
+//      initialize and setup facebook sdk
+      window.fbAsyncInit = function() {
+          FB.init({
+              appId      : '1212797762087408',
+              xfbml      : true,
+              version    : 'v2.6'
+          });
+
+          FB.getLoginStatus(function (response) {
+             if(response.status === 'connected'){
+                 document.getElementById('status').innerHTML = 'we are connected';
+                 document.getElementById('login').style.visibility = 'hidden';
+             }else if(response.status === 'not authorized'){
+                 document.getElementById('statust').innerHTML = 'We are not logged in';
+             }else {
+                 document.getElementById('status').innerHTML = 'your not logged in into facebook';
+             }
+          });
+      };
+
+      (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+      
+      
+      
+      function login() {
+          FB.login(function (response) {
+              if (response.status === 'connected') {
+                  document.getElementById('status').innerHTML = 'we are connected';
+                  document.getElementById('login').style.visibility = 'hidden';
+              } else if (response.status === 'not authorized') {
+                  document.getElementById('statust').innerHTML = 'We are not logged in';
+              } else {
+                  document.getElementById('status').innerHTML = 'your not logged in into facebook';
+              }
+          },{scope: 'email'});
+          
+          
+          
+          function getinfo() {
+              FB.api('/me', 'get', {fields: 'first_name,last-name,name,id'}, function (response) {
+                  document.getElementById('status').innerHTML = response.id;
+              });
+          }
+      }
+  </script>
+
+
+<div id="status"></div>
+  <button onclick="getinfo()">Get Info</button>
+  <button onclick="login()" id="login">Login</button>
+
+
+</body>
+</html>
